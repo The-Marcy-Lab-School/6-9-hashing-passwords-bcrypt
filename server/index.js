@@ -1,11 +1,17 @@
 const express = require('express');
+const path = require('path');
 const { register, login } = require('./controllers/authControllers');
 const { listUsers, updateUser, deleteUser } = require('./controllers/userControllers');
 const logRoutes = require('./middleware/logRoutes');
 
+const pathToFrontend = process.env.NODE_ENV === 'production'
+  ? '../frontend/dist'
+  : '../frontend';
+
 const app = express();
 app.use(express.json());
 app.use(logRoutes);
+app.use(express.static(path.join(__dirname, pathToFrontend)));
 
 // ====================================
 // Auth routes
